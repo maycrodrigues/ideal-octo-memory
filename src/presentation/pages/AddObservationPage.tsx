@@ -20,6 +20,11 @@ export function AddObservationPage() {
   const [notes, setNotes] = useState("");
   const [location, setLocation] = useState<Location | undefined>(undefined);
   const [photoBase64, setPhotoBase64] = useState<string | undefined>(undefined);
+  const [dateString, setDateString] = useState(() => {
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    return now.toISOString().slice(0, 16);
+  });
 
   const toggleChild = (child: Child) => {
     setChildren((prev) => {
@@ -66,7 +71,7 @@ export function AddObservationPage() {
       notes,
       location,
       photoBase64,
-      timestamp: Date.now(),
+      timestamp: new Date(dateString).getTime() || Date.now(),
     };
 
     const parsed = ObservationSchema.safeParse(newObservation);
@@ -88,6 +93,9 @@ export function AddObservationPage() {
     setNotes("");
     setLocation(undefined);
     setPhotoBase64(undefined);
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+    setDateString(now.toISOString().slice(0, 16));
   };
 
   return (
@@ -177,6 +185,19 @@ export function AddObservationPage() {
                 );
               })}
             </div>
+          </div>
+
+          {/* Data e Hora */}
+          <div>
+            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">
+              Data e Horário do Registro
+            </label>
+            <input
+              type="datetime-local"
+              value={dateString}
+              onChange={(e) => setDateString(e.target.value)}
+              className="w-full text-lg font-bold text-indigo-900 focus:outline-none p-5 rounded-2xl border-4 border-indigo-50 focus:border-indigo-200 bg-indigo-50/30 transition-colors"
+            />
           </div>
 
           {/* Atividade */}
