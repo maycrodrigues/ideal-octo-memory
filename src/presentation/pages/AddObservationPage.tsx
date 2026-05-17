@@ -188,7 +188,7 @@ export function AddObservationPage() {
           </div>
 
           {/* Data e Hora */}
-          <div>
+          <div className="w-full max-w-full overflow-hidden">
             <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">
               Data e Horário do Registro
             </label>
@@ -196,7 +196,7 @@ export function AddObservationPage() {
               type="datetime-local"
               value={dateString}
               onChange={(e) => setDateString(e.target.value)}
-              className="w-full text-lg font-bold text-indigo-900 focus:outline-none p-5 rounded-2xl border-4 border-indigo-50 focus:border-indigo-200 bg-indigo-50/30 transition-colors"
+              className="w-full text-base sm:text-lg font-bold text-indigo-900 focus:outline-none p-4 sm:p-5 rounded-2xl border-4 border-indigo-50 focus:border-indigo-200 bg-indigo-50/30 transition-colors"
             />
           </div>
 
