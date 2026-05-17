@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/observikids/',
+    base: '/ideal-octo-memory/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
