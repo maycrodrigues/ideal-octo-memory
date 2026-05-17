@@ -131,5 +131,6 @@ src/
 - Mantenha o README atualizado
 - Use JSDoc para funções complexas
 - Ao final de suas modificações sempre informe qual seria o melhor título para o commit (padrão Conventional Commits)
+- **IMPORTANTE:** NUNCA execute `git push` automaticamente após gerar os commits. Após realizar um commit, pergunte expressamente ao usuário se ele deseja enviar (fazer o push) para o repositório remoto.
 
 Sempre que implementar uma nova funcionalidade, considere: arquitetura modular, experiência offline, performance, acessibilidade e manutenibilidade. Use os componentes e padrões existentes em `/shared` e proponha melhorias quando identificar oportunidades.
