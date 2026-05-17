@@ -1,0 +1,5 @@
+{
+  "name": "observikids-guidelines",
+  "description": "Diretrizes arquiteturais, de estilo e padrões de código obrigatórios para atuar no projeto ObserviKids",
+  "instructions": "prompt.md"
+}

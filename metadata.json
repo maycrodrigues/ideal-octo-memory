@@ -1,0 +1,9 @@
+{
+  "name": "ObserviKids",
+  "description": "Sistema de registro de observações e atividades diárias (Mariana e Miguel) com suporte a localização, fotos e geração de relatórios.",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera"
+  ],
+  "majorCapabilities": []
+}
