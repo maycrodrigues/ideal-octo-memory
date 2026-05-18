@@ -35,7 +35,7 @@ export function ReportPage() {
         const dayOfMonth = date.getDate().toString().padStart(2, '0');
         const formattedDayOfWeek = dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1);
         
-        let reportText = `${formattedDayOfWeek}, dia ${dayOfMonth}\n\n`;
+        let reportText = `*${formattedDayOfWeek}, dia ${dayOfMonth}*\n\n`;
 
         const formatAct = (obs: Observation, child: string) => {
           const time = new Date(obs.timestamp).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
@@ -48,7 +48,12 @@ export function ReportPage() {
           } else if (status?.wellBeing) {
             statusStr = ` (Bem-estar: ${status.wellBeing})`;
           }
-           return `* [${time}] ${obs.activity}${statusStr}${obs.notes ? ` - ${obs.notes}` : ''}`;
+
+          const timeStr = `_[${
+            time
+          }]_`;
+          const notesStr = obs.notes ? ` - ${obs.notes}` : "";
+          return `${timeStr}${statusStr} - ${obs.activity}${notesStr}`;
         };
         
         // Reverse to show oldest to newest inside the daily report
@@ -56,7 +61,7 @@ export function ReportPage() {
 
         const marianaObs = reversedObs.filter(o => o.children.includes("Mariana"));
         if (marianaObs.length > 0) {
-          reportText += `MARIANA:\n`;
+          reportText += `*MARIANA*:\n`;
           marianaObs.forEach(obs => {
              reportText += `${formatAct(obs, "Mariana")}\n`;
           });
@@ -65,7 +70,7 @@ export function ReportPage() {
         
         const miguelObs = reversedObs.filter(o => o.children.includes("Miguel"));
         if (miguelObs.length > 0) {
-          reportText += `MIGUEL:\n`;
+          reportText += `*MIGUEL*:\n`;
           miguelObs.forEach(obs => {
             reportText += `${formatAct(obs, "Miguel")}\n`;
           });
@@ -84,7 +89,7 @@ export function ReportPage() {
     if (reportsByDay.length === 0) return "";
 
     const sortedByOldest = [...reportsByDay].sort((a, b) => a.dateKey - b.dateKey);
-    return sortedByOldest.map((r) => r.reportText).join("\n\n— — —\n\n");
+    return sortedByOldest.map((r) => r.reportText).join("\n\n");
   }, [reportsByDay]);
 
   const handleCopy = (text: string) => {
