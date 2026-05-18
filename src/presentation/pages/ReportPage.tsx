@@ -1,9 +1,8 @@
 import React, { useMemo } from "react";
-import { ulid } from "ulid";
 import { useObservations } from "../../application/useCases";
 import { useTenant } from "../hooks/useTenant";
 import { AlertAdapter } from "../../infrastructure/alertAdapter";
-import { ChildSchema, Observation } from "../../domain/types";
+import { Observation } from "../../domain/types";
 
 export function ReportPage() {
   const { tenantId } = useTenant();
@@ -81,6 +80,13 @@ export function ReportPage() {
       .sort((a, b) => b.dateKey - a.dateKey); // Newest days first
   }, [observations]);
 
+  const combinedReportText = useMemo(() => {
+    if (reportsByDay.length === 0) return "";
+
+    const sortedByOldest = [...reportsByDay].sort((a, b) => a.dateKey - b.dateKey);
+    return sortedByOldest.map((r) => r.reportText).join("\n\n— — —\n\n");
+  }, [reportsByDay]);
+
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     AlertAdapter.success("Copiado!", "Relatório copiado para a área de transferência.");
@@ -116,6 +122,33 @@ export function ReportPage() {
          <div className="p-8 text-center text-indigo-400 font-black uppercase tracking-widest text-sm">Nenhum relatório disponível.</div>
       ) : (
         <div className="space-y-6">
+          {reportsByDay.length > 1 && (
+            <div className="bg-white rounded-[40px] p-8 border-4 border-indigo-100 shadow-[8px_8px_0px_0px_#e0e7ff]">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-black text-indigo-900 leading-tight">Mensagem Agrupada (por dia)</h3>
+              </div>
+
+              <div className="bg-slate-50 rounded-3xl p-6 border-4 border-slate-100 font-serif leading-relaxed text-sm text-slate-700 whitespace-pre-wrap mb-6">
+                {combinedReportText}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  onClick={() => handleCopy(combinedReportText)}
+                  className="py-3 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 font-black text-xs rounded-2xl transition-colors uppercase tracking-widest border-2 border-indigo-100"
+                >
+                  Copiar Tudo
+                </button>
+                <button
+                  onClick={() => handleWhatsApp(combinedReportText)}
+                  className="py-3 bg-green-500 hover:bg-green-600 text-white font-black text-xs rounded-2xl transition-colors uppercase tracking-widest shadow-[4px_4px_0px_0px_#166534] active:translate-x-1 active:translate-y-1 active:shadow-none"
+                >
+                  Enviar Tudo via WhatsApp
+                </button>
+              </div>
+            </div>
+          )}
+
           {reportsByDay.map(report => (
             <div key={report.dateKey} className="bg-white rounded-[40px] p-8 border-4 border-indigo-100 shadow-[8px_8px_0px_0px_#e0e7ff]">
               <div className="flex justify-between items-center mb-6">
