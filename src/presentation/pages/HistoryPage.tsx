@@ -26,15 +26,36 @@ export function HistoryPage() {
     <div className="max-w-2xl mx-auto pb-12">
       <h2 className="text-2xl font-black text-indigo-900 mb-8">Histórico de Atividades</h2>
       <div className="space-y-6">
-        {observations.map((obs) => (
+        {observations.map((obs) => {
+          const isMiguelOnly = obs.children.length === 1 && obs.children[0] === "Miguel";
+          const isMarianaOnly = obs.children.length === 1 && obs.children[0] === "Mariana";
+          
+          let cardClasses = "bg-white border-indigo-600 shadow-[8px_8px_0px_0px_#4338ca]";
+          let textClasses = "text-indigo-900";
+          let dateClasses = "text-indigo-400";
+          let childTagClasses = "bg-indigo-50 border-indigo-100 text-indigo-900";
+          
+          if (isMarianaOnly) {
+            cardClasses = "bg-pink-50 border-pink-500 shadow-[8px_8px_0px_0px_#ec4899]";
+            textClasses = "text-pink-900";
+            dateClasses = "text-pink-500";
+            childTagClasses = "bg-pink-100 border-pink-200 text-pink-900";
+          } else if (isMiguelOnly) {
+            cardClasses = "bg-blue-50 border-blue-500 shadow-[8px_8px_0px_0px_#3b82f6]";
+            textClasses = "text-blue-900";
+            dateClasses = "text-blue-500";
+            childTagClasses = "bg-blue-100 border-blue-200 text-blue-900";
+          }
+
+          return (
           <article
             key={obs.id}
-            className="bg-white p-6 rounded-[32px] border-4 border-indigo-600 shadow-[8px_8px_0px_0px_#4338ca] transition-transform hover:-translate-y-1"
+            className={`p-6 rounded-[32px] border-4 transition-transform hover:-translate-y-1 ${cardClasses}`}
           >
             <div className="flex flex-col sm:flex-row gap-6">
               {obs.photoBase64 && (
                 <div
-                  className="w-full sm:w-32 h-32 shrink-0 rounded-2xl bg-indigo-50 border-4 border-indigo-100 overflow-hidden"
+                  className="w-full sm:w-32 h-32 shrink-0 rounded-2xl bg-white border-4 border-white/50 overflow-hidden shadow-sm"
                 >
                   <img src={obs.photoBase64} alt="Atividade" className="object-cover w-full h-full" />
                 </div>
@@ -43,17 +64,17 @@ export function HistoryPage() {
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-black uppercase text-indigo-400 tracking-wider mb-1">
+                    <span className={`text-[10px] font-black uppercase tracking-wider mb-1 ${dateClasses}`}>
                       {new Date(obs.timestamp).toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' })} • 
                       {" "}{new Date(obs.timestamp).toLocaleDateString("pt-BR", { day: '2-digit', month: 'short' })}
                     </span>
-                    <h3 className="text-xl font-black text-indigo-900 leading-tight">
+                    <h3 className={`text-xl font-black leading-tight ${textClasses}`}>
                       {obs.activity}
                     </h3>
                   </div>
                   <button
                     onClick={() => handleDelete(obs.id)}
-                    className="text-pink-400 hover:text-pink-600 bg-pink-50 hover:bg-pink-100 p-2 rounded-xl transition-colors shrink-0 ml-2"
+                    className="text-slate-400 hover:text-red-500 bg-white/50 hover:bg-red-50 p-2 rounded-xl transition-colors shrink-0 ml-2"
                     title="Excluir"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -68,14 +89,14 @@ export function HistoryPage() {
                        const status = obs.childStatuses?.[child];
                        const hasStatus = !!(status?.mood || status?.wellBeing);
                        return (
-                         <div key={child} className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 border-2 border-indigo-100 rounded-xl">
-                           <span className="text-[10px] font-black text-indigo-900 uppercase tracking-widest">{child}</span>
+                         <div key={child} className={`inline-flex items-center gap-1.5 px-3 py-1.5 border-2 rounded-xl ${childTagClasses}`}>
+                           <span className="text-[10px] font-black uppercase tracking-widest">{child}</span>
                            {hasStatus && (
                              <>
-                                <span className="text-indigo-300">•</span>
-                                {status?.mood && <span className="text-[10px] font-bold text-indigo-600">{status.mood}</span>}
-                                {(status?.mood && status?.wellBeing) && <span className="text-indigo-300">•</span>}
-                                {status?.wellBeing && <span className="text-[10px] font-bold text-pink-600">{status.wellBeing}</span>}
+                                <span className="opacity-40">•</span>
+                                {status?.mood && <span className="text-[10px] font-bold opacity-80">{status.mood}</span>}
+                                {(status?.mood && status?.wellBeing) && <span className="opacity-40">•</span>}
+                                {status?.wellBeing && <span className="text-[10px] font-bold opacity-80">{status.wellBeing}</span>}
                              </>
                            )}
                          </div>
@@ -99,7 +120,7 @@ export function HistoryPage() {
                 )}
 
                 {obs.location && (
-                  <div className="inline-flex items-center gap-2 px-3 py-2 bg-yellow-50 rounded-xl border-2 border-yellow-100 text-yellow-700">
+                  <div className="inline-flex items-center gap-2 px-3 py-2 bg-white/50 rounded-xl border-2 border-black/5 text-slate-700">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                       <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                     </svg>
@@ -115,7 +136,8 @@ export function HistoryPage() {
               </div>
             </div>
           </article>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
