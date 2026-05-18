@@ -27,13 +27,13 @@ export function AddObservationPage() {
   });
 
   const toggleChild = (child: Child) => {
-    setChildren((prev) => {
+    setChildren((prev: Child[]) => {
       const isSelected = prev.includes(child);
       if (isSelected) {
         const newStatuses = { ...childStatuses };
         delete newStatuses[child];
         setChildStatuses(newStatuses);
-        return prev.filter((c) => c !== child);
+        return prev.filter((c: Child) => c !== child);
       } else {
         return [...prev, child];
       }
@@ -41,16 +41,16 @@ export function AddObservationPage() {
   };
 
   const updateChildStatus = (child: Child, field: keyof ChildStatus, value: string) => {
-    setChildStatuses(prev => ({
+    setChildStatuses((prev: Partial<Record<Child, ChildStatus>>) => ({
       ...prev,
       [child]: {
-        ...prev[child],
+        ...(prev[child] || {}),
         [field]: value
       }
     }));
   };
 
-  const handleSave = async (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (children.length === 0) {
@@ -195,7 +195,7 @@ export function AddObservationPage() {
             <input
               type="datetime-local"
               value={dateString}
-              onChange={(e) => setDateString(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setDateString(e.target.value)}
               className="w-full text-base sm:text-lg font-bold text-indigo-900 focus:outline-none p-4 sm:p-5 rounded-2xl border-4 border-indigo-50 focus:border-indigo-200 bg-indigo-50/30 transition-colors"
             />
           </div>
@@ -208,7 +208,7 @@ export function AddObservationPage() {
             <input
               type="text"
               value={activity}
-              onChange={(e) => setActivity(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setActivity(e.target.value)}
               placeholder="Ex: Brincando no parquinho..."
               className="w-full text-lg font-bold text-indigo-900 placeholder-indigo-200 focus:outline-none p-5 rounded-2xl border-4 border-indigo-50 focus:border-indigo-200 bg-indigo-50/30 transition-colors"
             />
@@ -222,7 +222,7 @@ export function AddObservationPage() {
             <textarea
               rows={3}
               value={notes}
-              onChange={(e) => setNotes(e.target.value)}
+              onChange={(e: { target: { value: any; }; }) => setNotes(e.target.value)}
               placeholder="Anotações extras sobre o momento..."
               className="w-full text-base font-medium text-slate-700 placeholder-slate-300 focus:outline-none p-5 rounded-2xl border-4 border-slate-50 focus:border-slate-200 bg-slate-50/50 transition-colors resize-none"
             />

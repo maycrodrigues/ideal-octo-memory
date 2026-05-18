@@ -273,7 +273,7 @@ export function ReportPage() {
           {combinedReportText ? (
             <div className="bg-white rounded-[40px] p-8 border-4 border-indigo-100 shadow-[8px_8px_0px_0px_#e0e7ff]">
               <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-black text-indigo-900 leading-tight">Mensagem Agrupada (por dia)</h3>
+                <h3 className="text-xl font-black text-indigo-900 leading-tight">Mensagem Agrupadas</h3>
               </div>
 
               <div className="bg-slate-50 rounded-3xl p-6 border-4 border-slate-100 font-serif leading-relaxed text-sm text-slate-700 whitespace-pre-wrap mb-6">
